@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+import reducer from './reducers';
+import middleware from "./middleware";
+import DeckList from "./components/DeckList";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
-  );
+export default class App extends Component {
+  render() {
+    return (
+      <Provider store={createStore(reducer)}>
+        <DeckList></DeckList>
+      </Provider>
+    );
+  }
 }
+
 
 const styles = StyleSheet.create({
   container: {
