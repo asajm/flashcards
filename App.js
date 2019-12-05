@@ -5,12 +5,14 @@ import { createStore } from "redux";
 import reducer from './reducers';
 import middleware from "./middleware";
 import DeckList from "./components/DeckList";
+import Constants from 'expo-constants'
 
 export default class App extends Component {
   render() {
     return (
       <Provider store={createStore(reducer)}>
-        <DeckList></DeckList>
+        <View style={{ height: Constants.statusBarHeight }} />
+        <DeckList />
       </Provider>
     );
   }
