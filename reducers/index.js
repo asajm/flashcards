@@ -9,10 +9,8 @@ function decks(state = {}, action) {
                 ...action.decks
             }
         case ADD_DECK:
-            return {
-                ...state,
-                ...action.deck
-            }
+            const { deck } = action
+            return Object.assign({}, state, { [deck.title]: deck })
         case ADD_CARD:
             return {
                 ...state,

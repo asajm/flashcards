@@ -29,34 +29,9 @@ const decks = {
     }
 }
 
-const decks_ = [
-    {
-        title: 'React',
-        questions: [
-            {
-                question: 'What is React?',
-                answer: 'A library for managing user interfaces'
-            },
-            {
-                question: 'Where do you make Ajax requests in React?',
-                answer: 'The componentDidMount lifecycle event'
-            }
-        ]
-    },
-    {
-        title: 'JavaScript',
-        questions: [
-            {
-                question: 'What is a closure?',
-                answer: 'The combination of a function and the lexical environment within which that function was declared.'
-            }
-        ]
-    }
-]
-
 class DeckList extends Component {
     componentDidMount() {
-        this.props.dispatch(receiveDecks({ decks }))
+        this.props.dispatch(receiveDecks(decks))
     }
 
     renderDeck = ({ item }) => {
@@ -74,10 +49,11 @@ class DeckList extends Component {
             )
         }
 
+        const _decks = Object.keys(decks).map((k) => decks[k])
         return (
             <View style={styles.container}>
                 <FlatList
-                    data={decks_}
+                    data={_decks}
                     renderItem={this.renderDeck}
                     keyExtractor={(item, index) => index.toString()}
                 />
@@ -95,9 +71,9 @@ const styles = StyleSheet.create({
     },
 });
 
-function mapStateToProps({ decks }) {
+function mapStateToProps(state) {
     return {
-        decks
+        decks: state
     }
 }
 
