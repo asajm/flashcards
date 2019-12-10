@@ -1,53 +1,42 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, TextInput, Button, Alert, FlatList } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 import { connect } from "react-redux";
-import { receiveDecks, addDeck } from "../actions";
-import Deck from './Deck'
-import { getDeckInfo } from "../utils/helper";
+import { addDeck } from "../actions";
 
 
 
 class NewDeck extends Component {
     state = {
-        text: ''
+        value: '',
     }
 
-    onChangeText = (text) => {
-        this.setState(() => ({ text }))
+    onChangeText = (value) => {
+        this.setState(() => ({ value }))
     }
 
     submit = () => {
-        const title = this.state.text
-        console.log({
-            [title]: getDeckInfo(title)
-        })
-
+        const title = this.state.value
         this.props.dispatch(addDeck(title))
-    }
-
-    renderDeck = ({ item }) => {
-        console.log(item)
-        return <Deck title={item.title} cards={item.questions.length} />
+        this.setState(() => ({ value: '' }))
+        this.props.navigation.navigate(
+            'DeckList',
+            { title }
+        )
     }
 
     render() {
-        const { decks } = this.props
-        const _decks = Object.keys(decks).map((k) => decks[k])
+        const { value } = this.state
         return (
             <View>
                 <TextInput
                     style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
                     placeholder='please type the deck name'
                     onChangeText={this.onChangeText}
+                    value={value}
                 />
                 <Button
                     title='submit'
                     onPress={this.submit}
-                />
-                <FlatList
-                    data={_decks}
-                    renderItem={this.renderDeck}
-                    keyExtractor={(item, index) => index.toString()}
                 />
             </View>
         )

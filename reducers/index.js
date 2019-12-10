@@ -1,5 +1,5 @@
 
-import { RECEIVE_DECKS, ADD_DECK, ADD_CARD } from "../actions/index";
+import { RECEIVE_DECKS, ADD_DECK, UPDATE_DECK } from "../actions/index";
 
 function decks(state = {}, action) {
     switch (action.type) {
@@ -9,16 +9,9 @@ function decks(state = {}, action) {
                 ...action.decks
             }
         case ADD_DECK:
-            const { deck } = action
-            return Object.assign({}, state, { [deck.title]: deck })
-        case ADD_CARD:
-            return {
-                ...state,
-                [action.deck]: {
-                    ...state[action.deck],
-                    questions: state[action.deck].questions.concat(action.card.question),
-                }
-            }
+            return Object.assign({}, state, { [action.deck.title]: action.deck })
+        case UPDATE_DECK:
+            return Object.assign({}, state, { [action.deck.title]: action.deck })
         default:
             return state
     }

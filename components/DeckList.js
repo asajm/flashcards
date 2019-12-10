@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 import { connect } from "react-redux";
 import { receiveDecks } from "../actions";
-import Deck from './Deck'
+import DeckInfo from './DeckInfo'
 
 const decks = {
     React: {
@@ -34,9 +34,33 @@ class DeckList extends Component {
         this.props.dispatch(receiveDecks(decks))
     }
 
+    componentDidUpdate() {
+        const { navigation } = this.props
+        const { params } = navigation.state
+        if (navigation.state.params) {
+            const { title } = params
+            if (title) {
+                setTimeout(() => {
+                    navigation.navigate(
+                        'DeckCard',
+                        { title }
+                    )
+                }, 500);
+            }
+        }
+    }
+
     renderDeck = ({ item }) => {
-        console.log(item)
-        return <Deck title={item.title} cards={item.questions.length} />
+        return (
+            <TouchableOpacity
+                onPress={() => this.props.navigation.navigate(
+                    'DeckCard',
+                    { title: item.title }
+                )}
+            >
+                <DeckInfo deck={item} />
+            </TouchableOpacity>
+        )
     }
 
     render() {
