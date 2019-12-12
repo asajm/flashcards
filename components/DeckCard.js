@@ -4,11 +4,20 @@ import { connect } from "react-redux";
 import DeckInfo from "./DeckInfo";
 
 class DeckCard extends Component {
-    goNewCard = (x) => {
+    goNewCard = () => {
         const { title } = this.props.deck
         const { navigate } = this.props.navigation
         navigate(
             'NewCard',
+            { title }
+        )
+    }
+
+    goQuiz = () => {
+        const { title } = this.props.deck
+        const { navigate } = this.props.navigation
+        navigate(
+            'Quiz',
             { title }
         )
     }
@@ -24,7 +33,7 @@ class DeckCard extends Component {
                 />
                 <Button
                     title='Start Quiz'
-                    onPress={this.submit}
+                    onPress={this.goQuiz}
                 />
             </View>
         )

@@ -22,14 +22,6 @@ class NewCard extends Component {
     submit = () => {
         const { deck } = this.props
         const { question, answer } = this.state
-        // deck.questions.append({question, answer})
-        _deck = {
-            ...deck,
-            questions: [...deck.questions, { question, answer }]
-        }
-
-        console.log(_deck)
-        // console.log(updateDeck(deck))
         this.props.dispatch(updateDeck({
             ...deck,
             questions: [...deck.questions, { question, answer }]
