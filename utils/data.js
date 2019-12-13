@@ -1,4 +1,4 @@
-let decks = {
+export const decks = {
     React: {
         title: 'React',
         questions: [
@@ -21,23 +21,4 @@ let decks = {
             }
         ]
     }
-}
-
-export function _getDecks() {
-    return new Promise((res, rej) => {
-        setTimeout(() => res({ ...decks }), 1000)
-    })
-}
-
-export function _saveDeck(deck) {
-    return new Promise((res, rej) => {
-        setTimeout(() => {
-            decks = {
-                ...decks,
-                [deck.title]: deck
-            }
-
-            res(decks)
-        }, 1000)
-    })
 }

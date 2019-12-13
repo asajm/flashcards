@@ -5,7 +5,8 @@ import { createStore } from "redux";
 import reducer from './reducers';
 import Constants from 'expo-constants'
 import { purple } from "./utils/colors";
-import { TabNav, StackNav } from "./components/Nav";
+import { StackNav } from "./components/Nav";
+import { setLocalNotification } from "./utils/helper";
 // import { createAppContainer } from 'react-navigation';
 // import { createBottomTabNavigator } from 'react-navigation-tabs';
 
@@ -18,6 +19,10 @@ function FlashcardsStatusBar({ backgroundColor, ...props }) {
 }
 
 export default class App extends Component {
+  componentDidMount() {
+    setLocalNotification()
+  }
+
   render() {
     return (
       <Provider store={createStore(reducer)}>

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, Button } from "react-native";
 import { connect } from "react-redux";
+import { clearLocalNotification, setLocalNotification } from "../utils/helper";
 
 const QUESTION = 'QUESTION'
 const ANSWER = 'ANSWER'
@@ -34,8 +35,8 @@ function QuizRuning({ view, viewQuestionAction, viewAnswerAction, correctAction,
         <View>
             {view === QUESTION && (<CardQuestion action={viewAnswerAction} {...props} />)}
             {view === ANSWER && (<CardAnswer action={viewQuestionAction} {...props} />)}
-            <Button title='Correct' onPress={correctAction} />
-            <Button title='Incorrect' onPress={incorrectAction} />
+            <Button title='Correct' onPress={() => correctAction(true)} />
+            <Button title='Incorrect' onPress={() => correctAction(false)} />
         </View>
     )
 }
@@ -58,21 +59,17 @@ class Quiz extends Component {
         this.setState({ view: QUESTION })
     }
 
-    setCorrect = () => {
+    setCorrect = (isCorrect) => {
+        let view = QUESTION
+        if (state.progress + 1 >= state.size) {
+            view = COMPLETE
+            clearLocalNotification().then(setLocalNotification)
+        }
         this.setState((state) => {
             return {
-                correct: state.correct + 1,
+                correct: state.correct + isCorrect ? 1 : 0,
                 progress: state.progress + 1,
-                view: state.progress + 1 < state.size ? state.view : COMPLETE,
-            }
-        })
-    }
-
-    setIncorrect = () => {
-        this.setState((state) => {
-            return {
-                progress: state.progress + 1,
-                view: state.progress + 1 < state.size ? state.view : COMPLETE,
+                view: view,
             }
         })
     }
@@ -96,7 +93,6 @@ class Quiz extends Component {
                             viewAnswerAction={this.viewAnswer}
                             viewQuestionAction={this.viewQuesiton}
                             correctAction={this.setCorrect}
-                            incorrectAction={this.setIncorrect}
                         />)
 
                 }
@@ -107,7 +103,6 @@ class Quiz extends Component {
 
 function mapStateToProps(state, props) {
     const { title } = props.navigation.state.params
-    // console.log(state[title])
     return {
         deck: state[title],
     }
