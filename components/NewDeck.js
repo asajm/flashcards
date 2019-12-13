@@ -27,14 +27,16 @@ class NewDeck extends Component {
     render() {
         const { value } = this.state
         return (
-            <View>
+            <View style={styles.container}>
+                <Text style={styles.title}>What is the title of your new deck?</Text>
                 <TextInput
-                    style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+                    style={styles.field}
                     placeholder='please type the deck name'
                     onChangeText={this.onChangeText}
                     value={value}
                 />
                 <Button
+                    // style={styles.btn}
                     title='submit'
                     onPress={this.submit}
                 />
@@ -48,8 +50,28 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
-        justifyContent: 'center',
+        paddingTop: 56,
     },
+    title: {
+        fontSize: 34,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        paddingHorizontal: 5,
+    },
+    field: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        marginTop: 34,
+        marginBottom: 21,
+        marginHorizontal: 5,
+        paddingHorizontal: 10,
+    },
+    btn: {
+        paddingTop: 21,
+        marginHorizontal: 5,
+        paddingHorizontal: 10,
+    }
 });
 
 function mapStateToProps(state) {
