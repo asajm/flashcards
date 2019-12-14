@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, TextInput, Button } from 'react-native';
+import { StyleSheet, View, TextInput, Button, Dimensions } from 'react-native';
 import { connect } from "react-redux";
 import { updateDeck } from '../actions/index'
 
@@ -36,19 +36,23 @@ class NewCard extends Component {
     render() {
         const { question, answer } = this.state
         return (
-            <View>
-                <TextInput
-                    style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-                    placeholder='please type the question'
-                    onChangeText={this.onChangeQuestion}
-                    value={question}
-                />
-                <TextInput
-                    style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-                    placeholder='please type the answer'
-                    onChangeText={this.onChangeAnswer}
-                    value={answer}
-                />
+            <View style={styles.container}>
+                <View style={styles.fieldContainer}>
+                    <TextInput
+                        style={styles.field}
+                        placeholder='please type the question'
+                        onChangeText={this.onChangeQuestion}
+                        value={question}
+                    />
+                </View>
+                <View style={styles.fieldContainer}>
+                    <TextInput
+                        style={styles.field}
+                        placeholder='please type the answer'
+                        onChangeText={this.onChangeAnswer}
+                        value={answer}
+                    />
+                </View>
                 <Button
                     title='submit'
                     onPress={this.submit}
@@ -63,7 +67,29 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
-        justifyContent: 'center',
+        paddingTop: 21,
+    },
+    title: {
+        fontSize: 34,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        paddingHorizontal: 5,
+    },
+    fieldContainer: {
+        flexDirection: 'row',
+        width: Dimensions.get('window').width,
+        marginTop: 8,
+        marginBottom: 21,
+        // marginHorizontal: 5,
+        paddingHorizontal: 10,
+    },
+    field: {
+        flex: 1,
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        paddingHorizontal: 10,
+        alignSelf: 'center',
     },
 });
 

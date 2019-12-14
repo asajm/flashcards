@@ -49,12 +49,10 @@ class DeckCard extends Component {
                 />
                 <View style={styles.btnContainer}>
                     <View style={styles.btn}><Button
-                        style={styles.btn}
                         title='Add Card'
                         onPress={this.goNewCard}
                     /></View>
                     <View style={styles.btn}><Button
-                        style={styles.btn}
                         title='Start Quiz'
                         onPress={this.goQuiz}
                     /></View>
@@ -77,11 +75,12 @@ const styles = StyleSheet.create({
     },
     btnContainer: {
         flexDirection: 'row',
+        marginHorizontal: 13,
     },
     btn: {
+        flex:1,
         paddingTop: 21,
-        marginHorizontal: 5,
-        paddingHorizontal: 10,
+        paddingHorizontal: 5,
     },
 });
 

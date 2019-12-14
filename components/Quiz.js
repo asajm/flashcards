@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { View, Text, Button } from "react-native";
+import { View, Text, Button, StyleSheet, Dimensions } from "react-native";
 import { connect } from "react-redux";
 import { clearLocalNotification, setLocalNotification } from "../utils/helper";
+import { red, green } from "../utils/colors";
 
 const QUESTION = 'QUESTION'
 const ANSWER = 'ANSWER'
@@ -9,39 +10,41 @@ const COMPLETE = 'COMPLETE'
 
 function QuizCompleted({ correct, size }) {
     return (
-        <View>
-            <Text>{`your score is ${(100 * correct / size).toFixed(2)}%`}</Text>
-        </View>
-    )
-}
-function CardQuestion({ card, action }) {
-    return (
-        <View>
-            <Text>{card.question}</Text>
-            <Button title='Answer' onPress={action} />
-        </View>
-    )
-}
-function CardAnswer({ card, action }) {
-    return (
-        <View>
-            <Text>{card.answer}</Text>
-            <Button title='Question' onPress={action} />
-        </View>
-    )
-}
-function QuizRuning({ view, viewQuestionAction, viewAnswerAction, correctAction, incorrectAction, ...props }) {
-    return (
-        <View>
-            {view === QUESTION && (<CardQuestion action={viewAnswerAction} {...props} />)}
-            {view === ANSWER && (<CardAnswer action={viewQuestionAction} {...props} />)}
-            <Button title='Correct' onPress={() => correctAction(true)} />
-            <Button title='Incorrect' onPress={() => correctAction(false)} />
+        <View style={styles.quizContainer}>
+            <View style={styles.cardContainer}>
+                <Text>{`The Score`}</Text>
+                <Text style={styles.cardBody}>{`${(100 * correct / size).toFixed(2)}%`}</Text>
+            </View>
         </View>
     )
 }
 
+function QuizRuning({ view, card, viewQuestionAction, viewAnswerAction, correctAction }) {
+    return (
+        <View style={styles.quizContainer}>
+            <View style={styles.cardContainer}>
+                <Text style={styles.cardBody}>{view === ANSWER ? card.answer : card.question}</Text>
+                <View style={styles.btnContainer}>
+                    <View style={styles.btn}>
+                        <Button
+                            title={view === ANSWER ? 'Question' : 'Answer'}
+                            onPress={view === ANSWER ? viewQuestionAction : viewAnswerAction}
+                        />
+                    </View>
+                </View>
+            </View>
 
+            <View style={styles.btnContainer}>
+                <View style={styles.btn}>
+                    <Button title='Correct' color={green} onPress={() => correctAction(true)} />
+                </View>
+                <View style={styles.btn}>
+                    <Button title='Incorrect' color={red} onPress={() => correctAction(false)} />
+                </View>
+            </View>
+        </View>
+    )
+}
 
 
 class Quiz extends Component {
@@ -61,13 +64,13 @@ class Quiz extends Component {
 
     setCorrect = (isCorrect) => {
         let view = QUESTION
-        if (state.progress + 1 >= state.size) {
+        if (this.state.progress + 1 >= this.state.size) {
             view = COMPLETE
             clearLocalNotification().then(setLocalNotification)
         }
         this.setState((state) => {
             return {
-                correct: state.correct + isCorrect ? 1 : 0,
+                correct: state.correct + (isCorrect ? 1 : 0),
                 progress: state.progress + 1,
                 view: view,
             }
@@ -79,8 +82,8 @@ class Quiz extends Component {
         const { correct, progress, size, view } = this.state
 
         return (
-            <View>
-                <Text>{`${correct} / ${size}`}</Text>
+            <View style={styles.container}>
+                <Text style={styles.cardHeader}>{`${correct} / ${size}`}</Text>
                 {
                     view == COMPLETE
                         ? (<QuizCompleted
@@ -100,6 +103,59 @@ class Quiz extends Component {
         )
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        // backgroundColor: '#fff',
+        alignItems: 'center',
+        paddingTop: 8,
+        width: Dimensions.get('window').width,
+    },
+    quizContainer: {
+        flex: 1,
+        width: Dimensions.get('window').width,
+    },
+    cardHeader: {
+        fontStyle: "italic",
+        color: '#555'
+    },
+    cardContainer: {
+        paddingBottom: 21,
+        paddingHorizontal: 10,
+
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: 5,
+        marginHorizontal: 10,
+        padding: 20,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+
+        elevation: 5,
+    },
+    cardBody: {
+        fontSize: 34,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        paddingBottom: 21,
+    },
+    btnContainer: {
+        flexDirection: 'row',
+        paddingTop: 21,
+        alignItems: 'center',
+    },
+    btn: {
+        flex: 1,
+        paddingHorizontal: 10,
+    },
+});
 
 function mapStateToProps(state, props) {
     const { title } = props.navigation.state.params

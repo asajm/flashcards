@@ -1,9 +1,7 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, Dimensions } from 'react-native';
 import { connect } from "react-redux";
 import { addDeck } from "../actions";
-
-
 
 class NewDeck extends Component {
     state = {
@@ -29,14 +27,15 @@ class NewDeck extends Component {
         return (
             <View style={styles.container}>
                 <Text style={styles.title}>What is the title of your new deck?</Text>
-                <TextInput
-                    style={styles.field}
-                    placeholder='please type the deck name'
-                    onChangeText={this.onChangeText}
-                    value={value}
-                />
+                <View style={styles.fieldContainer}>
+                    <TextInput
+                        style={styles.field}
+                        placeholder='please type the deck name'
+                        onChangeText={this.onChangeText}
+                        value={value}
+                    />
+                </View>
                 <Button
-                    // style={styles.btn}
                     title='submit'
                     onPress={this.submit}
                 />
@@ -58,20 +57,22 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         paddingHorizontal: 5,
     },
+    fieldContainer: {
+        flexDirection: 'row',
+        width: Dimensions.get('window').width,
+        marginTop: 34,
+        marginBottom: 21,
+        // marginHorizontal: 5,
+        paddingHorizontal: 10,
+    },
     field: {
+        flex: 1,
         height: 40,
         borderColor: 'gray',
         borderWidth: 1,
-        marginTop: 34,
-        marginBottom: 21,
-        marginHorizontal: 5,
         paddingHorizontal: 10,
+        alignSelf: 'center',
     },
-    btn: {
-        paddingTop: 21,
-        marginHorizontal: 5,
-        paddingHorizontal: 10,
-    }
 });
 
 function mapStateToProps(state) {
