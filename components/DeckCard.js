@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import { View, Button, StyleSheet } from "react-native";
+import { View, Button, StyleSheet, Platform } from "react-native";
 import { connect } from "react-redux";
 import DeckInfo from "./DeckInfo";
+import Constants from 'expo-constants'
+import { Header } from 'react-navigation'
 
 class DeckCard extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -41,6 +43,9 @@ class DeckCard extends Component {
 
     render() {
         const { deck } = this.props
+        console.log(Platform.OS)
+        console.log(Constants.statusBarHeight)
+        console.log(Header.HEIGHT)
         return (
             <View style={styles.container}>
                 <DeckInfo
