@@ -2,18 +2,24 @@ import React, { Component } from "react";
 import { View, Text, Button, StyleSheet, Dimensions } from "react-native";
 import { connect } from "react-redux";
 import { clearLocalNotification, setLocalNotification } from "../utils/helper";
-import { red, green } from "../utils/colors";
+import { red, green, yallow } from "../utils/colors";
 
 const QUESTION = 'QUESTION'
 const ANSWER = 'ANSWER'
 const COMPLETE = 'COMPLETE'
 
-function QuizCompleted({ correct, size }) {
+function QuizCompleted({ correct, size, restartAction }) {
     return (
         <View style={styles.quizContainer}>
             <View style={styles.cardContainer}>
                 <Text>{`The Score`}</Text>
                 <Text style={styles.cardBody}>{`${(100 * correct / size).toFixed(2)}%`}</Text>
+            </View>
+
+            <View style={styles.btnContainer}>
+                <View style={styles.btn}>
+                    <Button title='Restart Quiz' color={yallow} onPress={restartAction} />
+                </View>
             </View>
         </View>
     )
@@ -77,6 +83,15 @@ class Quiz extends Component {
         })
     }
 
+    restartQuiz = () => {
+        this.setState({
+            correct: 0,
+            progress: 0,
+            size: this.props.deck.questions.length,
+            view: QUESTION
+        })
+    }
+
     render() {
         const { deck } = this.props
         const { correct, progress, size, view } = this.state
@@ -89,6 +104,7 @@ class Quiz extends Component {
                         ? (<QuizCompleted
                             correct={correct}
                             size={size}
+                            restartAction={this.restartQuiz}
                         />)
                         : (<QuizRuning
                             view={view}
